@@ -51,22 +51,23 @@ public class ArticleController {
 		article.setName(articleForm.getName());
 		article.setContent(articleForm.getContent());
 		articleRepository.insert(article);
-		return "bbs";
+		return "redirect:/article";
 	}
 	
 	@RequestMapping("/insertComment")
 	public String insertComment(CommentForm commentForm) {
 		Comment comment=new Comment();
 		BeanUtils.copyProperties(commentForm, comment);
+		comment.setArticleId(commentForm.getArticleId());
 		commentRepository.insert(comment);
-		return "bbs";
+		return "redirect:/article";
 	}
 	@RequestMapping("/deleteArticle")
-	public String deleteArticle(ArticleForm articleForm) {
-		Article article=new Article();
-		BeanUtils.copyProperties(articleForm, article);
-		commentRepository.deleteByArticleId(article.getId());
+	public String deleteArticle(Integer id) {
 		
-		return "bbs";
+		commentRepository.deleteByArticleId(id);
+		articleRepository.deleteById(id);
+		
+		return "redirect:/article";
 	}
 }
