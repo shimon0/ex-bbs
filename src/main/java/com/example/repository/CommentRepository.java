@@ -10,10 +10,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import com.example.domain.Comment;
 
-
+@Repository
 public class CommentRepository {
 	private final RowMapper<Comment> COMMENT_ROW_MAPPER = (rs, i) -> {
 		Comment comment = new Comment();
@@ -42,7 +43,7 @@ public class CommentRepository {
 		comment.setId(keyHolder.getKey().intValue());
 	}
 	public void deleteByArticleId(Integer articleId) {
-		String deleteSql = "DELETE FROM comments WHERE id=:id;";
+		String deleteSql = "DELETE FROM comments WHERE article_id=:articleId;";
 		SqlParameterSource param=new MapSqlParameterSource().addValue("article_id", articleId);
 		template.update(deleteSql, param);
 	}
